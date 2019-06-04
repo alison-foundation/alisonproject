@@ -1,4 +1,10 @@
-# AlisonProject
+# Alison Project
+
+![Alison Project](./docs/images/banner.png)
+
+This README is also available in : ![french](./README_FR), ![french](./README_FR)
+
+---
 
 ## Work on the project
 
