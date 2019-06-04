@@ -2,7 +2,7 @@
 
 ![Alison Project](./docs/images/banner.png)
 
-This README is also available in : ![french](./README_FR), ![french](./README_FR)
+This README is also available in : ![english](./README.md), ![french](./README_FR.md)
 
 ---
 
