@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# DEPRECATED -- WILL DISAPPEAR IN FUTURE COMMIT
+
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd $dir
 

@@ -1,0 +1,18 @@
+language: python
+python:
+    - '3.6'
+install:
+ - pip install -r alison/requirements.txt
+ - pip install ./alison/
+script:
+  - make
+#deploy:
+#  - provider: pypi
+#    distributions: sdist
+#    user: alisonfoundation
+#    on:
+#      branch: master
+#      tags: true
+#      condition: $TRAVIS_PYTHON_VERSION = "3.6"
+#    password:
+#      secure: ""

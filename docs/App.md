@@ -1,6 +1,7 @@
 # The Alison Project Android Application
 
 The android application for the state-of-the-art sound recognition solution designed to help people suffering from hearing impairement or deafness all over the world.
+
 More details on our [website](https://alisonproject.ml)
 
 ## Getting Started
@@ -18,12 +19,9 @@ The application be soon available on the Google PlayStore.
 
 <img src="https://raw.githubusercontent.com/Faymir/alison-project-android-app/master/start_record.jpeg" alt="start_recording screenshot" width="200" height="390"/>
 
-+ After that you can start recoding the sound you want to recognize by clicking the start record icon.
-
-+ When you finish you can click it again to stop recording.
-
++ After that you can start recoding the sound you want to recognize by clicking the start record icon
++ When you finish you can click it again to stop recording
 + then enter a tag to assciate to the record and select light color to emit when the device recognize the sound.
-
 + Finally you can click Ok to validate.
 
 **Yeah! 🤗 your sound is learned**
@@ -31,8 +29,7 @@ The application be soon available on the Google PlayStore.
 ### Prerequisites
 
 + A phone device running android **version >= 4.16** and supporting bluetooth.
-
-+ A Raspberry pi configured following steps defined on this [repository](https://github.com/VincentErb/AlisonProject) and [here](https://github.com/VincentErb/AlisonProject/blob/master/bluetooth_server/README.md)
++ A Raspberry pi configure following steps defined on this [repository](https://github.com/alison-foundation/alisonproject/blob/master/README.md) and [here](https://github.com/alison-foundation/alisonproject/blob/master/alison/lib/bluetooth_server/README.md)
 
 ```
 Android [JellyBean](https://developer.android.com/reference/android/os/Build.VERSION_CODES.html#JELLY_BEAN)
@@ -40,9 +37,8 @@ Android [JellyBean](https://developer.android.com/reference/android/os/Build.VER
 
 ### Installing
 
-+ Android studio: [dowload here](https://developer.android.com/studio/).
-
-+ Clone this repository and open it in android studio
++ Android studio: [download here](https://developer.android.com/studio/).
++ clone this repository and open it in android studio
 
 
 ## Built With
@@ -65,10 +61,9 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 ## License
 
-This project is licensed under the GPL3 License - see the LICENSE.md file on Github for details
+This project is licensed under the GPL3 License - see the LICENSE file on Github for details
 
 ## Acknowledgments
 
 * [@pes8](https://github.com/Pes8/android-material-color-picker-dialog) - Android color picker
-
-* INSA Toulouse - FRANCE
+* INSA Toulouse
