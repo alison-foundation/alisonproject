@@ -1,5 +1,7 @@
 # Alison Project
 
+[![Build Status](https://travis-ci.org/alison-foundation/alisonproject.svg?branch=dev)](https://travis-ci.org/alison-foundation/alisonproject)
+
 ![Alison Project](./docs/images/banner.png)
 
 This README is also available in : ![english](./README.md), ![french](./README_FR.md)
