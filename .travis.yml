@@ -1,11 +1,11 @@
 language: python
 python:
     - '3.6'
-install:
- - pip install -r alison/requirements.txt
- - pip install ./alison/
 script:
-  - make
+    - make
+# install:
+#     - pip install -r alison/requirements.txt
+#     - pip install ./alison/
 #deploy:
 #  - provider: pypi
 #    distributions: sdist
