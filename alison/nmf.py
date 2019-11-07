@@ -1,5 +1,4 @@
 from sklearn.decomposition import SparseCoder, NMF
-import librosa as lib
 import librosa.decompose as dcp
 
 

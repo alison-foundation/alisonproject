@@ -1,5 +1,8 @@
+resampy
+audioread
+soundfile
+scipy
 yapf
 pylint
 numpy
 matplotlib
-librosa==0.6
