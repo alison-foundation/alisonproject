@@ -8,8 +8,8 @@ from alison.nmf import *
 
 def test_sound_recognition_v2():
     files = [
-        "samples/Sonnette/sonnette", "samples/Fire_Alarm/fire_alarm",
-        "samples/Phone_Ring/phone"
+        "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
+        "../samples/Phone_Ring/phone"
     ]
 
     dico = np.zeros([513, 0])
@@ -18,7 +18,7 @@ def test_sound_recognition_v2():
     for file in files:
         stft = np.zeros([513, 0])
 
-        for i in range(1, 5):
+        for i in range(1, 4):
             rate, signal = wav.read(file + str(i) + ".wav")
             stft = np.concatenate((stft, spectrum.get_stft(signal / 1.0)),
                                   axis=1)
@@ -27,7 +27,7 @@ def test_sound_recognition_v2():
         dico = np.concatenate((dico, dico_plus), axis=1)
 
     for file in files:
-        rate2, signal2 = wav.read(file + "5.wav")
+        rate2, signal2 = wav.read(file +"5.wav")
         stft2 = spectrum.get_stft(signal2 * 1.0)
         activations = get_activations(stft2, dico, 3)
 
@@ -38,6 +38,7 @@ def test_sound_recognition_v2():
             plt.title("Ligne " + str(i))
             plt.stem(activations[i, :])
 
+        plt.suptitle(file)
         plt.show()
 
 
@@ -46,12 +47,12 @@ def test_sound_recognition():
     Example on how to use get_nmf and get_activations
     """
 
-    rate, signal = wav.read("samples/Sonnette/sonnette1.wav")
+    rate, signal = wav.read("../samples/Sonnette/sonnette1.wav")
     stft = spectrum.get_stft(signal * 1.0)
 
     for file in [
-            "samples/Sonnette/sonnette", "samples/Fire_Alarm/fire_alarm",
-            "samples/Phone_Ring/phone"
+            "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
+            "../samples/Phone_Ring/phone"
     ]:
 
         for i in range(1, 5):
@@ -65,7 +66,7 @@ def test_sound_recognition():
     # obtain dictionary with NMF
     dico, base_act = get_nmf(stft, 8)
 
-    rate2, signal2 = wav.read("samples/Sonnette/sonnette5.wav")
+    rate2, signal2 = wav.read("../samples/Sonnette/sonnette5.wav")
     stft2 = spectrum.get_stft(signal2 * 1.0)
 
     # get activations using the previously computed dictionary
@@ -121,7 +122,7 @@ def demo_nmf():
 
     i = 0
     # first frame spectrum
-    spectrum = stft[:, i]
+    spectrumData = stft[:, i]
     # first frame component activation
     line = activation[:, i]
 
@@ -134,7 +135,7 @@ def demo_nmf():
 
     plt.subplot(6, 1, 1)
     plt.title("Spectrum")
-    plt.stem(spectrum)
+    plt.stem(spectrumData)
 
     plt.subplot(6, 1, 2)
     plt.title("Components")
