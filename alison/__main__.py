@@ -9,23 +9,23 @@ import subprocess
 import os
 import _thread
 
-#from  . import read_wav_file #listen, mic_listener,
+from  . import read_wav_file, listen, mic_listener
 from . import learn_from_file, read_wav_file
 from .recognition import SoundRecognizer
 #from . import philips_hue as lamps
-#from .server import BluetoothServer
+from .server import BluetoothServer
 
 
-# def launch_bluetooth_server(mic_listener):
-#     bluetoothConServer = None
-#
-#     def server_thread():
-#         bluetoothConServer.start()
-#         launch_bluetooth_server
-#
-#     bluetoothConServer = BluetoothServer(mic_listener)
-#     thread1 = threading.Thread(target=server_thread)
-#     thread1.start()
+def launch_bluetooth_server(mic_listener):
+    bluetoothConServer = None
+
+    def server_thread():
+        bluetoothConServer.start()
+        launch_bluetooth_server
+
+    bluetoothConServer = BluetoothServer(mic_listener)
+    thread1 = threading.Thread(target=server_thread)
+    thread1.start()
 
 
 if __name__ == "__main__":
@@ -92,8 +92,8 @@ if __name__ == "__main__":
         recognizer.process_audio(signal)
     else:
         logging.info("Input signal set to ReSpeaker")
-        #mic_listener = listen.MicListener(recognizer)
-        #logging.info("Starting bluetooth server thread")
-        #launch_bluetooth_server(mic_listener)
+        mic_listener = listen.MicListener(recognizer)
+        logging.info("Starting bluetooth server thread")
+        launch_bluetooth_server(mic_listener)
 
-        #mic_listener.run_listening()
+        mic_listener.run_listening()
