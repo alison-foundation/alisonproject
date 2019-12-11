@@ -93,7 +93,7 @@ if __name__ == "__main__":
     else:
         logging.info("Input signal set to ReSpeaker")
         mic_listener = listen.MicListener(recognizer)
-        logging.info("Starting bluetooth server thread")
-        launch_bluetooth_server(mic_listener)
+        # logging.info("Starting bluetooth server thread")
+        # launch_bluetooth_server(mic_listener)
 
         mic_listener.run_listening()
