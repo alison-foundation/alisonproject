@@ -9,7 +9,7 @@ import subprocess
 import os
 import _thread
 
-from  . import read_wav_file, listen, mic_listener
+from . import read_wav_file, listen, mic_listener
 from . import learn_from_file, read_wav_file
 from .recognition import SoundRecognizer
 #from . import philips_hue as lamps
