@@ -8,12 +8,15 @@ import threading
 import subprocess
 import os
 import _thread
+import respeaker
+from pixel_ring import pixel_ring
 
 from . import read_wav_file, listen, mic_listener
 from . import learn_from_file, read_wav_file
 from .recognition import SoundRecognizer
 #from . import philips_hue as lamps
 from .server import BluetoothServer
+from . import respeaker_led as rl
 
 
 def launch_bluetooth_server(mic_listener):
@@ -52,8 +55,18 @@ if __name__ == "__main__":
     def callback(evt):
         print("Recognized", evt.tag, "at time", evt.time, "with value",
               evt.value)
+        
+        if (evt.tag =='phone_ring'):
+            _thread.start_new_thread(rl.turn_on_led,(0,0,255))
+        
+        if (evt.tag =='sonnette'):
+            _thread.start_new_thread(rl.turn_on_led,(255,0,0))
 
-        #if (evt.tag == 'phone_ring'):
+        if (evt.tag =="fire_alarm"):
+            print("oui")
+            _thread.start_new_thread(rl.turn_on_led,(0,255,0))
+
+        #if (evt.tag =='phone_ring'):
             #_thread.start_new_thread(lamps.turn_on_alert, (3,1))
             #thread_light = threading.Thread(target=lamps.turn_on_alert(3,1))
             #thread_light.start()

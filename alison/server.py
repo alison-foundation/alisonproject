@@ -40,8 +40,8 @@ class BluetoothServer:
                     #Do actions depending on received message
                     if (msg == "start"):
                         # Tell respeaker thread to start listening sound
-                        print(type(self.mic_listener))
-                        print(self.mic_listener)
+                        # print(type(self.mic_listener))
+                        # print(self.mic_listener)
                         self.mic_listener.start_learning()
 
                         #if all done right
