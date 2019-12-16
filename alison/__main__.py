@@ -40,6 +40,10 @@ if __name__ == "__main__":
         help="Recognize sound from an audio file instead of the ReSpeaker",
         type=str)
     parser.add_argument(
+        "--mic",
+        help="Use the computer microphone instead of the ReSpeaker",
+        type=str)
+    parser.add_argument(
         "--learn",
         help="Name of a file that holds all the learning data",
         type=str)
@@ -89,23 +93,29 @@ if __name__ == "__main__":
     recognizer = SoundRecognizer(callback=callback)
 
     # Dict
-    if args.dict != None:
+    if args.dict is not None:
         logging.info("Loading dictionary %s", args.dict)
         recognizer.load_dictionary(args.dict)
 
     # Learn
-    if args.learn != None:
+    if args.learn is not None:
         logging.info("Learn from file %s", args.learn)
         learn_from_file(recognizer, args.learn)
 
     # Source
-    if args.file != None:
+    if args.file is not None:
         logging.info("Input signal set to file %s", args.file)
         rate, signal = read_wav_file(args.file)
         recognizer.process_audio(signal)
+
     else:
         logging.info("Input signal set to ReSpeaker")
-        mic_listener = listen.MicListener(recognizer)
+        # Mic
+        if args.mic is not None:
+            mic_listener = listen.MicListener(recognizer, True)
+        else :
+            mic_listener = listen.MicListener(recognizer, False)
+
         # logging.info("Starting bluetooth server thread")
         # launch_bluetooth_server(mic_listener)
 

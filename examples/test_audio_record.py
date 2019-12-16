@@ -40,6 +40,26 @@ waveFile.setframerate(RATE)
 waveFile.writeframes(b''.join(frames))
 waveFile.close()
 
+def record ():
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1
+    RATE = 44100
+    CHUNK = 1024
+    RECORD_SECONDS = 5
+    # start Recording
+    stream = audio.open(format=FORMAT, channels=CHANNELS,
+                        rate=RATE, input=True,
+                        frames_per_buffer=CHUNK)
+    print("recording...")
+    frames = []
+
+    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+        data = stream.read(CHUNK)
+        frames.append(data)
+    print("finished recording")
+
+    return frames
+
 files = [
     "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
     "../samples/Phone_Ring/phone"
