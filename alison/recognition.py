@@ -54,7 +54,7 @@ class SoundRecognizer:
         
         entry: a sound sample containing mostly the sound to recognize."""
         stft = get_stft(entry)
-        dico, _ = nmf.get_nmf(stft, self.components_per_tag)
+        dico, _ = nmf.get_pnmf(stft, self.components_per_tag)
 
         if self.dictionary is None:
             self.dictionary = dico
