@@ -202,16 +202,23 @@ if __name__ == "__main__":
     # -------- Comparaison of two activations lines
     plt.subplot(4, 1, 1)
     plt.title("activation ref")
-    plt.stem(activations[0, :])
+    markerline, stemlines, baseline = plt.stem(activations[0, :])
+    plt.setp(markerline, 'color', "#1a9988")
+    plt.setp(stemlines, 'color', "#1a9988")
+    plt.setp(baseline, 'color', "#000000")
+
 
     plt.subplot(4, 1, 2)
     plt.title("activation to test")
-    plt.stem(activations2[0, :])
+    markerline, stemlines, baseline = plt.stem(activations2[0, :])
+    plt.setp(markerline, 'color', "#eb5600")
+    plt.setp(stemlines, 'color', "#eb5600")
+    plt.setp(baseline, 'color', "#000000")
     line1, line2, _ = equalize_array_size(activations[0, :], activations2[0, :])
     plt.subplot(4, 1, 3)
     plt.title("before correcting offset")
-    plt.plot(line1,'r')
-    plt.plot(line2, 'b')
+    plt.plot(line1, color = "#1a9988")
+    plt.plot(line2, color = "#eb5600")
 
 
 
@@ -220,8 +227,8 @@ if __name__ == "__main__":
 
     plt.subplot(4, 1, 4)
     plt.title("after correcting offset")
-    plt.plot(line1, 'r')
-    plt.plot(shift(line2, offset, cval=0), 'b')
+    plt.plot(line1, 'r', color = "#1a9988")
+    plt.plot(shift(line2, offset, cval=0), color = "#eb5600")
     plt.show()
 
 

@@ -147,6 +147,28 @@ def demo_nmf():
 
     plt.show()
 
+def test_dico_column():
+    files = [
+        "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
+        "../samples/Phone_Ring/phone"
+    ]
+
+    dico = np.zeros([513, 0])
+    stft = np.zeros([513, 0])
+
+    j = 1
+    #for i in range(1, 6):
+    rate, signal = wav.read("../samples/Complex_Sounds/TV&Phone_Ring.wav.wav")
+    stft = spectrum.get_stft(signal / 1.0)
+    dico, _ = get_nmf(stft, 6)
+    for c in range(0, 6):
+        plt.subplot(5, 3, j)
+        plt.title("complex" + "c" + str(c + 1))
+        plt.stem(dico[:, c])
+        j = j + 1
+    plt.show()
+
 
 if __name__ == "__main__":
-    test_sound_recognition_v2()
+    #test_sound_recognition_v2()
+    test_dico_column()
