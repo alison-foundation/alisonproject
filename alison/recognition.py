@@ -1,6 +1,7 @@
 import numpy as np
 import alison.nmf as nmf
 from alison.spectrum import get_stft
+from examples.signal_alignement import verif_lines
 
 
 class SoundEvent:
@@ -55,11 +56,13 @@ class SoundRecognizer:
         entry: a sound sample containing mostly the sound to recognize."""
         stft = get_stft(entry)
         dico, _ = nmf.get_nmf(stft, self.components_per_tag)
-
+        activations = nmf.get_activations(stft, dico, self.components_per_tag)
         if self.dictionary is None:
             self.dictionary = dico
+            self.activations = activations
         else:
             self.dictionary = np.concatenate((self.dictionary, dico), axis=1)
+            self.activations = np.concatenate((self.activations, activations), axis=1)
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
@@ -160,10 +163,11 @@ class SoundRecognizer:
                     tag_info.activated = activated
 
                     if tag_info.activated:
-                        event = SoundEvent(
-                            (self.current_position + i) / self.sample_rate,
-                            tag, value)
-                        self.events.append(event)
+                        if verif_lines(self.activations[i], activations[i]) : #activations[i]
+                            event = SoundEvent(
+                                (self.current_position + i) / self.sample_rate,
+                                tag, value)
+                            self.events.append(event)
 
                         if self.callback != None:
                             self.callback(event)

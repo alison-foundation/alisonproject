@@ -7,6 +7,7 @@ import _thread
 import os
 
 from . import read_wav_file
+from . import mic_recording
 
 from respeaker import Microphone
 
@@ -24,8 +25,9 @@ class MicListener:
     end_learning_event = threading.Event()
     recognizer_lock = threading.RLock()
 
-    def __init__(self, recognizer):
+    def __init__(self, recognizer, computer_mic):
         self.recognizer = recognizer
+        self.computer_mic = computer_mic
 
     def run_listening(self):
         mic = Microphone()
@@ -34,7 +36,10 @@ class MicListener:
             while 1:
                 print("Listening\n")
                 was_learning = self.learning
-                data = mic.listen(LEN_AUDIO, 1)  #make recordings of one second
+                if self.computer_mic :
+                    data = mic_recording.record(LEN_AUDIO)
+                else:
+                    data = mic.listen(LEN_AUDIO, 1)  #make recordings of one second
                 data = b''.join(data)
 
                 if was_learning:

@@ -5,6 +5,9 @@ from scipy.ndimage.interpolation import shift
 from statsmodels.tsa.stattools import ccovf
 from scipy.stats.stats import pearsonr
 
+
+
+
 def equalize_array_size(array1, array2):
     '''
     reduce the size of one sample to make them equal size.
@@ -148,118 +151,13 @@ def highres(y, kind='cubic', res=100):
     ynew = f(xnew)
     return xnew, ynew
 
+
 def verif_lines(activationRef, activationTest):
-
-
-    return True
-
-if __name__ == "__main__":
-    import scipy.io.wavfile as wav
-    import numpy as np
-    import matplotlib.pyplot as plt
-
-    import alison.spectrum as spectrum
-    from alison.nmf import *
-
-    from scipy.ndimage.interpolation import shift
-
-    files = [
-        "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
-        "../samples/Phone_Ring/phone"
-    ]
-
-    j = 1
-
-    #-------- Fire alarm
-    rate, signal = wav.read( "../samples/Fire_Alarm/fire_alarm1.wav")
-    stft = spectrum.get_stft(signal / 1.0)
-    dico, _ = get_nmf(stft, 3)
-    activations = get_activations(stft, dico, 3)
-    print(dico)
-    for c in range(0, 3):
-        plt.subplot(3, 2, j)
-        plt.title("dico" + "c" + str(c + 1))
-        plt.stem(dico[:, c])
-        j = j + 1
-        plt.subplot(3, 2, j)
-        plt.title("acti" + "l" + str(c + 1))
-        plt.stem(activations[c, :])
-        j = j + 1
-    plt.suptitle("Fire alarm 1")
-    plt.show()
-    # -------- Complex sounds
-    j = 1
-    rate, signal = wav.read("../samples/Complex_Sounds/Doorbell+old_Phone_Ringing+Fire_Alarm.wav")
-    stft2 = spectrum.get_stft(signal / 1.0)
-    activations2 = get_activations(stft2, dico, 3)
-    for c in range(0, 3):
-        plt.subplot(3, 2, j)
-        plt.title("dico" + "c" + str(c + 1))
-        plt.stem(dico[:, c])
-        j = j + 1
-        plt.subplot(3, 2, j)
-        plt.title("acti" + "l" + str(c + 1))
-        plt.stem(activations2[c, :])
-        j = j + 1
-    plt.suptitle("Complex Sounds")
-    plt.show()
-    # -------- Comparaison of two activations lines
-    plt.subplot(4, 1, 1)
-    plt.title("activation ref")
-    markerline, stemlines, baseline = plt.stem(activations[0, :])
-    plt.setp(markerline, 'color', "#1a9988")
-    plt.setp(stemlines, 'color', "#1a9988")
-    plt.setp(baseline, 'color', "#000000")
-
-
-    plt.subplot(4, 1, 2)
-    plt.title("activation to test")
-    markerline, stemlines, baseline = plt.stem(activations2[0, :])
-    plt.setp(markerline, 'color', "#eb5600")
-    plt.setp(stemlines, 'color', "#eb5600")
-    plt.setp(baseline, 'color', "#000000")
-    line1, line2, _ = equalize_array_size(activations[0, :], activations2[0, :])
-    #line2 = shift(line2, -100,cval=0)
-    plt.subplot(4, 1, 3)
-    plt.title("before correcting offset")
-    plt.plot(line1, color = "#1a9988")
-    plt.plot(line2, color = "#eb5600")
-
-
-
-    offset = phase_align(line1, line2, (0,len(line1)))
-    print("offset", offset)
-
-    plt.subplot(4, 1, 4)
-    plt.title("after correcting offset")
-    plt.plot(line1, 'r', color = "#1a9988")
-    plt.plot(shift(line2, offset, cval=0), color = "#eb5600")
-    plt.show()
-
-
-    print("Pearson correlation coefficient = ", pearsonr(line1,shift(line2, offset, cval=0)))
-    '''
-    
-    NPTS = 100
-    SHIFTVAL = 4
-    NOISE = 1e-2  # can perturb offset retrieval from true
-    print('true signal offset:', SHIFTVAL)
-
-    # generate some noisy data and simulate a shift
-    y = signal.gaussian(NPTS, std=4) + np.random.normal(1, NOISE, NPTS)
-    shifted = shift(signal.gaussian(NPTS, std=4), SHIFTVAL) + np.random.normal(1, NOISE, NPTS)
-
-    # align the shifted spectrum back to the real
-    s = phase_align(y, shifted, [10, 90])
-    print('phase shift value to align is', s)
-
-    # chi squared alignment at native resolution
-    s = chisqr_align(y, shifted, [10, 90], init=-3.5, bound=2)
-    print('chi square alignment', s)
-
-    # make some diagnostic plots
-    plt.plot(y, label='original data')
-    plt.plot(shifted, label='shifted data')
-    plt.plot(shift(shifted, s, mode='nearest'), ls='--', label='aligned data')
-    plt.legend(loc='best')
-    plt.show()'''
+    threshold = 0.3
+    line1, line2, _ = equalize_array_size(activationRef, activationTest)
+    offset = phase_align(line1, line2, (0, len(line1)))
+    shiftLine2 = shift(line2, offset, cval=0)
+    if (pearsonr(line1, shift(line2, offset, cval=0)).__getitem__(0) > threshold) :
+        return True
+    else :
+        return False

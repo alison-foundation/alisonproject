@@ -40,36 +40,56 @@ waveFile.setframerate(RATE)
 waveFile.writeframes(b''.join(frames))
 waveFile.close()
 
-files = [
-    "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
-    "../samples/Phone_Ring/phone"
-]
+def record ():
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1
+    RATE = 44100
+    CHUNK = 1024
+    RECORD_SECONDS = 5
+    # start Recording
+    stream = audio.open(format=FORMAT, channels=CHANNELS,
+                        rate=RATE, input=True,
+                        frames_per_buffer=CHUNK)
+    print("recording...")
+    frames = []
 
-dico = np.zeros([513, 0])
-print(dico.shape)
+    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+        data = stream.read(CHUNK)
+        frames.append(data)
+    print("finished recording")
 
-for file in files:
-    stft = np.zeros([513, 0])
+    return frames
 
-    for i in range(1, 4):
-        rate, signal = wav.read(file + str(i) + ".wav")
-        stft = np.concatenate((stft, spectrum.get_stft(signal / 1.0)),
-                              axis=1)
+# files = [
+#     "../samples/Sonnette/sonnette", "../samples/Fire_Alarm/fire_alarm",
+#     "../samples/Phone_Ring/phone"
+# ]
 
-    dico_plus, _ = get_nmf(stft, 3)
-    dico = np.concatenate((dico, dico_plus), axis=1)
+# dico = np.zeros([513, 0])
+# print(dico.shape)
 
-for file in files:
-    rate2, signal2 = wav.read("audio_Record.wav")
-    stft2 = spectrum.get_stft(signal2 * 1.0)
-    activations = get_activations(stft2, dico, 3)
+# for file in files:
+#     stft = np.zeros([513, 0])
 
-    plt.clf()
+#     for i in range(1, 4):
+#         rate, signal = wav.read(file + str(i) + ".wav")
+#         stft = np.concatenate((stft, spectrum.get_stft(signal / 1.0)),
+#                               axis=1)
 
-    for i in range(0, 9):
-        plt.subplot(3, 3, i + 1)
-        plt.title("Ligne " + str(i))
-        plt.stem(activations[i, :])
+#     dico_plus, _ = get_nmf(stft, 3)
+#     dico = np.concatenate((dico, dico_plus), axis=1)
 
-    plt.suptitle(file)
-    plt.show()
+# for file in files:
+#     rate2, signal2 = wav.read("audio_Record.wav")
+#     stft2 = spectrum.get_stft(signal2 * 1.0)
+#     activations = get_activations(stft2, dico, 3)
+
+#     plt.clf()
+
+#     for i in range(0, 9):
+#         plt.subplot(3, 3, i + 1)
+#         plt.title("Ligne " + str(i))
+#         plt.stem(activations[i, :])
+
+#     plt.suptitle(file)
+#     plt.show()
