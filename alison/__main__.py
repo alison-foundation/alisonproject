@@ -41,8 +41,7 @@ if __name__ == "__main__":
         type=str)
     parser.add_argument(
         "--mic",
-        help="Use the computer microphone instead of the ReSpeaker",
-        type=str)
+        help="Use the computer microphone instead of the ReSpeaker",action='store_true')
     parser.add_argument(
         "--learn",
         help="Name of a file that holds all the learning data",
@@ -111,7 +110,7 @@ if __name__ == "__main__":
     else:
         logging.info("Input signal set to ReSpeaker")
         # Mic
-        if args.mic is not None:
+        if args.mic:
             mic_listener = listen.MicListener(recognizer, True)
         else :
             mic_listener = listen.MicListener(recognizer, False)
