@@ -69,26 +69,6 @@ if __name__ == "__main__":
             print("oui")
             _thread.start_new_thread(rl.turn_on_led,(0,255,0))
 
-        #if (evt.tag =='phone_ring'):
-            #_thread.start_new_thread(lamps.turn_on_alert, (3,1))
-            #thread_light = threading.Thread(target=lamps.turn_on_alert(3,1))
-            #thread_light.start()
-           # proc = subprocess.Popen(
-           #     ['python3', '/home/pi/4mics_hat/pixels_demo.py'],
-           #     stdout=open("/home/pi/testzone/output.txt", "ab"))
-           # threading.Timer(2, kill_process, [str(proc.pid)]).start()
-        #if (evt.tag == 'sonnette'):
-            #_thread.start_new_thread(lamps.turn_on_alert, (3,2))
-        #if (evt.tag == 'fire_alarm'):
-            #_thread.start_new_thread(lamps.turn_on_alert, (3,3))
-            #thread_light = threading.Thread(target=lamps.turn_on_alert(3,2))
-            #thread_light.start()
-            #lamps.turn_on_alert(3,2)
-            #proc = subprocess.Popen(
-            #    ['python3', '/home/pi/4mics_hat/pixels.py'],
-            #    stdout=open("/home/pi/testzone/output.txt", "ab"))
-            #threading.Timer(2, kill_process, [str(proc.pid)]).start()
-
     recognizer = SoundRecognizer(callback=callback)
 
     # Dict
@@ -108,14 +88,15 @@ if __name__ == "__main__":
         recognizer.process_audio(signal)
 
     else:
-        logging.info("Input signal set to ReSpeaker")
         # Mic
         if args.mic:
+            print("Input signal set to computer microphone")
             mic_listener = listen.MicListener(recognizer, True)
         else :
+            print("Input signal set to ReSpeaker")
             mic_listener = listen.MicListener(recognizer, False)
 
-        # logging.info("Starting bluetooth server thread")
-        # launch_bluetooth_server(mic_listener)
+        print("Starting bluetooth server thread")
+        launch_bluetooth_server(mic_listener)
 
         mic_listener.run_listening()
