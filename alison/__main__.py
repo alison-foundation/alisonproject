@@ -75,6 +75,7 @@ if __name__ == "__main__":
     if args.dict is not None:
         logging.info("Loading dictionary %s", args.dict)
         recognizer.load_dictionary(args.dict)
+        recognizer.load_activations("samples/sample.act")
 
     # Learn
     if args.learn is not None:

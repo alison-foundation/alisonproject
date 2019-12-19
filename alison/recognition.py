@@ -121,12 +121,63 @@ class SoundRecognizer:
 
         self._reset_sound_processing()
 
+    def save_activations(self, filename):
+        """Save the activations lines to a file.
+        Then the activations lines can be loaded with self.load_activations"""
+        file = open(filename, 'w')
+        file.write(str(self.activations.shape[0]))
+        file.write(" ")
+        file.write(str(self.activations.shape[1]))
+        file.write("\n")
+
+        file.write(str(len(self.tags)))
+        file.write("\n")
+
+        for key, value in self.tags.items():
+            file.write(key.replace(" ", "_"))
+            file.write(" ")
+            file.write(str(value.components_range.start))
+            file.write(" ")
+            file.write(str(value.components_range.stop))
+            file.write("\n")
+
+        for l in range(0, self.activations.shape[0]):
+            for c in range(0, self.activations.shape[1]):
+                file.write(str(self.activations[l, c]))
+                file.write(" ")
+
+            file.write("\n")
+
+        file.close()
+
+    def load_activations(self, filename):
+        """Load the dictionary from a file"""
+        file = open(filename, 'r')
+        lines = file.readlines()
+
+        shapestr = lines[0].split(" ")
+        self.activations = np.zeros([int(shapestr[0]), int(shapestr[1])])
+
+        tag_count = int(lines[1])
+
+        for i in range(0, tag_count):
+            tag_str = lines[i + 2].split(" ")
+            self.tags[tag_str[0]] = TagInfo(
+                range(int(tag_str[1]), int(tag_str[2])))
+
+        for l in range(0, self.activations.shape[0]):
+            linestr = lines[l + 2 + tag_count].split(" ")
+
+            for c in range(0, self.activations.shape[1]):
+                self.activations[l, c] = float(linestr[c])
+
+        self._reset_sound_processing()
+
     def process_audio(self, audio):
         """Compute spectrum from audio source, and call process_spectrum with
         the result"""
         self.current_audio = np.concatenate((self.current_audio, audio))
         spectrum = get_stft(self.current_audio)
-        
         if spectrum.size > 0:
             self.process_spectrum(spectrum)
 
