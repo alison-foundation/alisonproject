@@ -7,7 +7,7 @@ import _thread
 import os
 
 from . import read_wav_file
-from examples import test_audio_record
+from . import mic_recording
 
 from respeaker import Microphone
 
@@ -37,7 +37,7 @@ class MicListener:
                 print("Listening\n")
                 was_learning = self.learning
                 if self.computer_mic :
-                    data = test_audio_record.record()
+                    data = mic_recording.record(LEN_AUDIO)
                 else:
                     data = mic.listen(LEN_AUDIO, 1)  #make recordings of one second
                 data = b''.join(data)
