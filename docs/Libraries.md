@@ -20,6 +20,10 @@ Our main library is LibROSA. It is a well-known python signal processing tool th
 While we installed every other library easily on our Raspberry Pi, dozens of hours of trial weren't enough for us to manage to insall LibROSA. LibROSA simply isn't meant for a Raspberry Pi processor. Fortunately, the methods used by Alison aren't the problematic ones in LibROSA.  
 To solve the issue, we compiled our own mini version of LibROSA (the library is under ISC license, open to modifications) using only needed modules.
 
+## LibNMF
+
+We use one method from this library PNMF in our learning phase in order to create nice dictionary matrices.
+
 ## PHue
 
 Phue is a library designed to control Philips Hue lights through python. It is used to communicate sound class detection information in real time.   
