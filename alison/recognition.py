@@ -28,6 +28,7 @@ class SoundRecognizer:
         self.tags = {}
         # shape: [n_features, n_components]
         self.dictionary = None
+        self.activations = None
 
         # current_audio contains the audio that was recorded but not yet parsed.
         self.current_position = 0
@@ -99,7 +100,7 @@ class SoundRecognizer:
         file.close()
 
     def load_dictionary(self, filename):
-        """Load the dictionary from a file"""
+        """Load the reference dictionary from a file"""
         file = open(filename, 'r')
         lines = file.readlines()
 
@@ -151,7 +152,7 @@ class SoundRecognizer:
         file.close()
 
     def load_activations(self, filename):
-        """Load the dictionary from a file"""
+        """Load the reference activation matrix from a file"""
         file = open(filename, 'r')
         lines = file.readlines()
 
