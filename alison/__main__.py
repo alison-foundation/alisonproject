@@ -7,6 +7,7 @@ import logging
 import threading
 import subprocess
 import os
+import librosa as lib
 import _thread
 import respeaker
 from pixel_ring import pixel_ring
@@ -48,6 +49,8 @@ if __name__ == "__main__":
         type=str)
     parser.add_argument(
         "--dict", help="Use a precomputed dictionary.", type=str)
+    parser.add_argument(
+        "--save", help="Save a sample of dictionary and activation matrix", type=str)
     args = parser.parse_args()
 
     def kill_process(pid):
@@ -88,12 +91,19 @@ if __name__ == "__main__":
         rate, signal = read_wav_file(args.file)
         recognizer.process_audio(signal)
 
+    # Save
+    if args.save is not None:
+        y, sample_rate = lib.load("samples/Fire_Alarm/fire_alarm1.wav")
+        recognizer.add_dictionary_entry("fire", "")
+
+        recognizer.save_activations("samples/sample.act")
+
     else:
         # Mic
         if args.mic:
             print("Input signal set to computer microphone")
             mic_listener = listen.MicListener(recognizer, True)
-        else :
+        else:
             print("Input signal set to ReSpeaker")
             mic_listener = listen.MicListener(recognizer, False)
 

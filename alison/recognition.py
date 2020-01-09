@@ -56,7 +56,7 @@ class SoundRecognizer:
         
         entry: a sound sample containing mostly the sound to recognize."""
         stft = get_stft(entry)
-        dico, _ = nmf.get_nmf(stft, self.components_per_tag)
+        dico, _ = nmf.get_pnmf(stft, self.components_per_tag)
         activations = nmf.get_activations(stft, dico, self.components_per_tag)
         if self.dictionary is None:
             self.dictionary = dico
@@ -205,7 +205,7 @@ class SoundRecognizer:
                 tag_range = tag_info.components_range
                 results = np.percentile(
                     self.current_nmf_results[tag_range.start:tag_range.stop, i:
-                                             (i + self.horizon)],
+                                                                             (i + self.horizon)],
                     70,
                     axis=1)
                 value = np.percentile(results, 70)
@@ -215,13 +215,13 @@ class SoundRecognizer:
                     tag_info.activated = activated
 
                     if tag_info.activated:
-                        if verif_lines(self.activations[i], activations[i]) : #activations[i]
+                        if verif_lines(self.activations[i], activations[i]):  # activations[i]
                             event = SoundEvent(
                                 (self.current_position + i) / self.sample_rate,
                                 tag, value)
                             self.events.append(event)
 
-                        if self.callback != None:
+                        if self.callback is not None:
                             self.callback(event)
 
         self.current_position += parsed_size
