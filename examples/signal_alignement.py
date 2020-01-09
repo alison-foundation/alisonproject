@@ -149,9 +149,14 @@ def highres(y, kind='cubic', res=100):
     return xnew, ynew
 
 def verif_lines(activationRef, activationTest):
+    for i in len(activationRef):
+        line1, line2, _ = equalize_array_size(activationRef[i, :], activationTest)
+        offset = phase_align(line1, line2, (0, len(line1)))
+        if (pearsonr(line1, shift(line2, offset, cval=0)).get(0)) > 0.3:
+            return True
+    return False
 
 
-    return True
 
 if __name__ == "__main__":
     import scipy.io.wavfile as wav
