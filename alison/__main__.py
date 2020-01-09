@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # Save
     if args.save is not None:
         y, sample_rate = lib.load("samples/Fire_Alarm/fire_alarm1.wav")
-        recognizer.add_dictionary_entry("fire", "")
+        recognizer.add_dictionary_entry("fire", y)
         recognizer.save_dictionary("samples/"+args.save+".dic")
         recognizer.save_activations("samples/"+args.save+".act")
 
