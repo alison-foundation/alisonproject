@@ -153,7 +153,7 @@ def verif_lines(activationRef, activationTest):
         for j in range(0, len(activationTest)) :
             line1, line2, _ = equalize_array_size(activationRef[i, :], activationTest[j,:])
             offset = phase_align(line1, line2, (0, len(line1)))
-            if (pearsonr(line1, shift(line2, offset, cval=0)).get(0)) > 0.3:
+            if (pearsonr(line1, shift(line2, offset, cval=0))[0]) > 0.3:
                 return True
     return False
 
