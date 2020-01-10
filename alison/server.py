@@ -56,7 +56,7 @@ class BluetoothServer:
                         tag = msg.split(" | ")[1]
                         color = msg.split(" | ")[2]
 
-                        if current_audio != None:
+                        if current_audio.any() != None:
                             self.mic_listener.register_sound(
                                 tag, current_audio)
                             client_sock.send("done.")
