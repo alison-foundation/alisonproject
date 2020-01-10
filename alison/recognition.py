@@ -216,7 +216,7 @@ class SoundRecognizer:
 
                     if tag_info.activated:
                         if verif_lines(self.activations, activations):  # activations[i]
-                            print("YES")
+                            print("\n ================> YES")
                             event = SoundEvent(
                                 (self.current_position + i) / self.sample_rate,
                                 tag, value)
