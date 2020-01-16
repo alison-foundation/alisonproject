@@ -21,7 +21,7 @@ class SoundRecognizer:
     def __init__(self, **kwargs):
         self.threshold = 10
         self.horizon = 20
-        self.components_per_tag = 4
+        self.components_per_tag = 6
         # sample rate in hertz
         self.sample_rate = 25
 
@@ -215,8 +215,9 @@ class SoundRecognizer:
                     tag_info.activated = activated
 
                     if tag_info.activated:
+                        print("\n ===> False Positive ?")
                         if verif_lines(self.activations, activations):  # activations[i]
-                            print("\n ================> YES")
+                            print("\n ================> NO")
                             event = SoundEvent(
                                 (self.current_position + i) / self.sample_rate,
                                 tag, value)
