@@ -12,9 +12,15 @@ class SoundEvent:
 
 
 class TagInfo:
+    def __init__(self, color, components_range):
+        self.components_range = components_range
+        self.activated = False
+        self.color = color
+    
     def __init__(self, components_range):
         self.components_range = components_range
         self.activated = False
+        self.color = False
 
 
 class SoundRecognizer:
@@ -50,7 +56,7 @@ class SoundRecognizer:
 
         self.events = []
 
-    def add_dictionary_entry(self, tag, entry):
+    def add_dictionary_entry(self, tag, color, entry):
         """Add a sound to be recognized by Big Alison.
         
         entry: a sound sample containing mostly the sound to recognize."""
@@ -66,7 +72,7 @@ class SoundRecognizer:
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-        self.tags[tag] = TagInfo(range(range_start, range_stop))
+        self.tags[tag] = TagInfo(color, range(range_start, range_stop))
         self._reset_sound_processing()
 
     def save_dictionary(self, filename):

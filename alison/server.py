@@ -58,7 +58,7 @@ class BluetoothServer:
 
                         if current_audio.any() != None:
                             self.mic_listener.register_sound(
-                                tag, current_audio)
+                                tag, color, current_audio)
                             client_sock.send("done.")
                         else:
                             client_sock.send("error: no recording available.")
