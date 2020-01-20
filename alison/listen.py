@@ -11,7 +11,7 @@ from . import mic_recording
 
 from respeaker import Microphone
 
-LEN_AUDIO = 2  #in seconds
+LEN_AUDIO = 3  #in seconds
 RATE = 16000
 # NUM = 1
 LEN_DATA = int(LEN_AUDIO * RATE * 2)
@@ -39,7 +39,7 @@ class MicListener:
                 if self.computer_mic :
                     data = mic_recording.record(LEN_AUDIO)
                 else:
-                    data = mic.listen(LEN_AUDIO, 1)  #make recordings of one second
+                    data = mic.listen(LEN_AUDIO, 3)  #make recordings of len_audio second with an intervall of second term
                 data = b''.join(data)
 
                 if was_learning:

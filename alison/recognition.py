@@ -56,7 +56,7 @@ class SoundRecognizer:
         
         entry: a sound sample containing mostly the sound to recognize."""
         stft = get_stft(entry)
-        dico, _ = nmf.get_pnmf(stft, self.components_per_tag)
+        dico, _ = nmf.get_nmf(stft, self.components_per_tag)
         activations = nmf.get_activations(stft, dico, self.components_per_tag)
         if self.dictionary is None:
             self.dictionary = dico
@@ -201,30 +201,9 @@ class SoundRecognizer:
         parsed_size = self.current_nmf_results.shape[1] - self.horizon
 
         for tag, tag_info in self.tags.items():
-            for i in range(parsed_size):
-                tag_range = tag_info.components_range
-                results = np.percentile(
-                    self.current_nmf_results[tag_range.start:tag_range.stop, i:
-                                                                             (i + self.horizon)],
-                    70,
-                    axis=1)
-                value = np.percentile(results, 70)
-                activated = value > self.threshold
+            if verif_lines(self.activations, activations):  # activations[i]
+                print(" \n ==== HEY I'VE RECOGNIZED A SOUND ==== \n")
 
-                if tag_info.activated != activated:
-                    tag_info.activated = activated
-
-                    if tag_info.activated:
-                        print("\n ===> False Positive ?")
-                        if verif_lines(self.activations, activations):  # activations[i]
-                            print("\n ================> NO")
-                            event = SoundEvent(
-                                (self.current_position + i) / self.sample_rate,
-                                tag, value)
-                            self.events.append(event)
-
-                        if self.callback is not None:
-                            self.callback(event)
 
         self.current_position += parsed_size
         self.current_nmf_results = self.current_nmf_results[:, -self.horizon:]

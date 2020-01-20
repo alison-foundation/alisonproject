@@ -150,9 +150,12 @@ def highres(y, kind='cubic', res=100):
     return xnew, ynew
 
 def verif_lines(activationRef, activationTest):
+    print(" length activation test ")
+    print(activationTest.shape)
+    print("length activation ref")
+    print(activationRef.shape)
     for i in range(0,len(activationRef)):
         for j in range(0, len(activationTest)) :
-            pdb.set_trace()
             line1, line2, _ = equalize_array_size(activationRef[i, :], activationTest[j,:])
             offset = phase_align(line1, line2, (0, len(line1)))
             coeff_pearson = pearsonr(line1, shift(line2, offset, cval=0))
@@ -185,7 +188,7 @@ if __name__ == "__main__":
     rate, signal = wav.read( "../samples/Fire_Alarm/fire_alarm1.wav")
     stft = spectrum.get_stft(signal / 1.0)
     dico, _ = get_nmf(stft, 3)
-    activations = get_activations(stft, dico, 3)
+    activations = get_activations(stft, dico)
     print(dico)
     for c in range(0, 3):
         plt.subplot(3, 2, j)
@@ -202,7 +205,7 @@ if __name__ == "__main__":
     j = 1
     rate, signal = wav.read("../samples/Complex_Sounds/Doorbell+old_Phone_Ringing+Fire_Alarm.wav")
     stft2 = spectrum.get_stft(signal / 1.0)
-    activations2 = get_activations(stft2, dico, 3)
+    activations2 = get_activations(stft2, dico)
     for c in range(0, 3):
         plt.subplot(3, 2, j)
         plt.title("dico" + "c" + str(c + 1))
