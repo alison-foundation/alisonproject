@@ -4,6 +4,7 @@ from scipy.interpolate import interp1d
 from scipy.ndimage.interpolation import shift
 from statsmodels.tsa.stattools import ccovf
 from scipy.stats.stats import pearsonr
+import pdb
 
 def equalize_array_size(array1, array2):
     '''
@@ -151,9 +152,13 @@ def highres(y, kind='cubic', res=100):
 def verif_lines(activationRef, activationTest):
     for i in range(0,len(activationRef)):
         for j in range(0, len(activationTest)) :
+            pdb.set_trace()
             line1, line2, _ = equalize_array_size(activationRef[i, :], activationTest[j,:])
             offset = phase_align(line1, line2, (0, len(line1)))
-            if (pearsonr(line1, shift(line2, offset, cval=0))[0]) > 0.7:
+            coeff_pearson = pearsonr(line1, shift(line2, offset, cval=0))
+            print("\n")
+            print(coeff_pearson)
+            if (coeff_pearson[0]) > 0.7:
                 return True
     return False
 

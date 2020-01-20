@@ -21,7 +21,7 @@ class SoundRecognizer:
     def __init__(self, **kwargs):
         self.threshold = 10
         self.horizon = 20
-        self.components_per_tag = 6
+        self.components_per_tag = 4
         # sample rate in hertz
         self.sample_rate = 25
 
@@ -193,7 +193,7 @@ class SoundRecognizer:
         of the components is greater than `threshold`"""
         if self.dictionary is None:
             return
-
+        
         activations = nmf.get_activations(spectrum, self.dictionary)
         self.current_nmf_results = np.concatenate(
             (self.current_nmf_results, activations), axis=1)

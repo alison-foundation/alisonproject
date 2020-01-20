@@ -11,7 +11,7 @@ from . import mic_recording
 
 from respeaker import Microphone
 
-LEN_AUDIO = 1  #in seconds
+LEN_AUDIO = 2  #in seconds
 RATE = 16000
 # NUM = 1
 LEN_DATA = int(LEN_AUDIO * RATE * 2)
