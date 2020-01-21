@@ -10,6 +10,7 @@ import os
 import _thread
 import respeaker
 from pixel_ring import pixel_ring
+from . import philips_hue as ph
 
 from . import read_wav_file, listen, mic_listener
 from . import learn_from_file, read_wav_file
@@ -57,17 +58,10 @@ if __name__ == "__main__":
     # Sink
     def callback(evt):
         print("Recognized", evt.tag, "at time", evt.time, "with value",
-              evt.value)
-        
-        if (evt.tag =='phone_ring'):
-            _thread.start_new_thread(rl.turn_on_led,(0,0,255))
-        
-        if (evt.tag =='sonnette'):
-            _thread.start_new_thread(rl.turn_on_led,(255,0,0))
-
-        if (evt.tag =="fire_alarm"):
-            print("oui")
-            _thread.start_new_thread(rl.turn_on_led,(0,255,0))
+              evt.value, "and color",evt.color)
+        r,g,b = evt.color.split(",")
+        _thread.start_new_thread(rl.turn_on_led,(int(r),int(g),int(b)))
+        _thread.start_new_thread(ph.blink_led,(int(r),int(g),int(b)))
 
     recognizer = SoundRecognizer(callback=callback)
 

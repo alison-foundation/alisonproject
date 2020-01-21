@@ -5,22 +5,18 @@ from examples.signal_alignement import verif_lines
 
 
 class SoundEvent:
-    def __init__(self, time, tag, value):
+    def __init__(self, time, tag, value, color="no_color"):
         self.time = time
         self.tag = tag
         self.value = value
+        self.color = color
 
 
 class TagInfo:
-    def __init__(self, color, components_range):
+    def __init__(self, components_range, color="no_color"):
         self.components_range = components_range
         self.activated = False
         self.color = color
-    
-    def __init__(self, components_range):
-        self.components_range = components_range
-        self.activated = False
-        self.color = False
 
 
 class SoundRecognizer:
@@ -72,7 +68,7 @@ class SoundRecognizer:
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-        self.tags[tag] = TagInfo(color, range(range_start, range_stop))
+        self.tags[tag] = TagInfo(range(range_start, range_stop), color)
         self._reset_sound_processing()
 
     def save_dictionary(self, filename):
@@ -171,7 +167,7 @@ class SoundRecognizer:
                     if tag_info.activated:
                         event = SoundEvent(
                             (self.current_position + i) / self.sample_rate,
-                            tag, value)
+                            tag, value, tag_info.color)
                         self.events.append(event)
 
                         if self.callback != None:
