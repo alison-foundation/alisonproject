@@ -13,10 +13,11 @@ class SoundEvent:
 
 
 class TagInfo:
-    def __init__(self, components_range, best_line, color="no_color"):
+    def __init__(self, components_range, best_line, best_line_index, color="no_color"):
         self.components_range = components_range
         self.activated = False
         self.best_line = best_line
+        self.best_line_index = best_line_index
         self.color = color
 
 
@@ -56,11 +57,11 @@ class SoundRecognizer:
 
 
     """ Get the index of the activaiton line with the greatest sum of values"""
-    def best_activation_line(self, start_index):
+    def best_activation_line(self):
         maxIndex = -1
         maxValue = 0
         for i in range(self.components_per_tag) :
-            sumLine = sum(self.activations[i+start_index, :])
+            sumLine = sum(self.activations[i, :])
             if (sumLine > maxValue):
                 maxIndex = i
                 maxValue = sumLine
@@ -79,12 +80,12 @@ class SoundRecognizer:
             self.activations = activations
         else:
             self.dictionary = np.concatenate((self.dictionary, dico), axis=1)
-            self.activations = np.concatenate((self.activations, activations), axis=1)
+            self.activations = activations
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-
-        self.tags[tag] = TagInfo(range(range_start, range_stop), self.best_activation_line(range_start), color)
+        index = self.best_activation_line(range_start)
+        self.tags[tag] = TagInfo(range(range_start, range_stop), activations[index, :], index, color)
 
         self._reset_sound_processing()
 
@@ -107,7 +108,7 @@ class SoundRecognizer:
             file.write(" ")
             file.write(str(value.components_range.stop))
             file.write(" ")
-            file.write(str(value.best_line))
+            file.write(str(value.best_line_index))
             file.write("\n")
 
         for l in range(0, self.dictionary.shape[0]):
@@ -161,7 +162,7 @@ class SoundRecognizer:
             file.write(" ")
             file.write(str(value.components_range.stop))
             file.write(" ")
-            file.write(str(value.best_line))
+            file.write(str(value.best_line_index))
             file.write("\n")
 
         for l in range(0, self.activations.shape[0]):
@@ -216,7 +217,7 @@ class SoundRecognizer:
         parsed_size = self.current_nmf_results.shape[1] - self.horizon
 
         for tag, tag_info in self.tags.items():
-            value = verif_lines(self.activations[tag_info.best_line, :], activations[tag_info.best_line, :])
+            value = verif_lines(tag_info.best_line, activations[tag_info.best_line_index + tag_info.components_range.start, :])
             activated = value > 0.7
             print(value)
             if activated:
