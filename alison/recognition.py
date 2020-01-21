@@ -215,10 +215,11 @@ class SoundRecognizer:
             value = verif_lines(self.activations[tag_info.best_line, :], activations[tag_info.best_line, :])
             activated = value > 0.7
             print(value)
+            print(activated)
             if activated:
                 if tag_info.activated != activated:
                     tag_info.activated = activated
-
+                    activated = False
                     if tag_info.activated:
                         event = SoundEvent(
                             self.current_position / self.sample_rate,
