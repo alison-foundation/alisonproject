@@ -29,7 +29,7 @@ def test_sound_recognition_v2():
     for file in files:
         rate2, signal2 = wav.read(file +"5.wav")
         stft2 = spectrum.get_stft(signal2 * 1.0)
-        activations = get_activations(stft2, dico, 3)
+        activations = get_activations(stft2, dico)
 
         plt.clf()
 
@@ -37,6 +37,8 @@ def test_sound_recognition_v2():
             plt.subplot(3, 3, i + 1)
             plt.title("Ligne " + str(i))
             plt.stem(activations[i, :])
+            print("Ligne " + str(i))
+            print(sum(activations[i, :]))
 
         plt.suptitle(file)
         plt.show()
@@ -170,5 +172,5 @@ def test_dico_column():
 
 
 if __name__ == "__main__":
-    #test_sound_recognition_v2()
-    test_dico_column()
+    test_sound_recognition_v2()
+    #test_dico_column()

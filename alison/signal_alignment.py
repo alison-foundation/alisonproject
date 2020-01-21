@@ -6,6 +6,7 @@ from statsmodels.tsa.stattools import ccovf
 from scipy.stats.stats import pearsonr
 import pdb
 
+
 def equalize_array_size(array1, array2):
     '''
     reduce the size of one sample to make them equal size.
@@ -149,22 +150,16 @@ def highres(y, kind='cubic', res=100):
     ynew = f(xnew)
     return xnew, ynew
 
+
 def verif_lines(activationRef, activationTest):
     print(" length activation test ")
     print(activationTest.shape)
     print("length activation ref")
     print(activationRef.shape)
-    for i in range(0,len(activationRef)):
-        for j in range(0, len(activationTest)) :
-            line1, line2, _ = equalize_array_size(activationRef[i, :], activationTest[j,:])
-            offset = phase_align(line1, line2, (0, len(line1)))
-            coeff_pearson = pearsonr(line1, shift(line2, offset, cval=0))
-            print("\n")
-            print(coeff_pearson)
-            if (coeff_pearson[0]) > 0.7:
-                return True
-    return False
-
+    line1, line2, _ = equalize_array_size(activationRef, activationTest)
+    offset = phase_align(line1, line2, (0, len(line1)))
+    coeff_pearson = pearsonr(line1, shift(line2, offset, cval=0))
+    return coeff_pearson[0]
 
 
 if __name__ == "__main__":
@@ -184,8 +179,8 @@ if __name__ == "__main__":
 
     j = 1
 
-    #-------- Fire alarm
-    rate, signal = wav.read( "../samples/Fire_Alarm/fire_alarm1.wav")
+    # -------- Fire alarm
+    rate, signal = wav.read("../samples/Fire_Alarm/fire_alarm1.wav")
     stft = spectrum.get_stft(signal / 1.0)
     dico, _ = get_nmf(stft, 3)
     activations = get_activations(stft, dico)
@@ -225,7 +220,6 @@ if __name__ == "__main__":
     plt.setp(stemlines, 'color', "#1a9988")
     plt.setp(baseline, 'color', "#000000")
 
-
     plt.subplot(4, 1, 2)
     plt.title("activation to test")
     markerline, stemlines, baseline = plt.stem(activations2[0, :])
@@ -233,27 +227,24 @@ if __name__ == "__main__":
     plt.setp(stemlines, 'color', "#eb5600")
     plt.setp(baseline, 'color', "#000000")
     line1, line2, _ = equalize_array_size(activations[0, :], activations2[0, :])
-    #line2 = shift(line2, -100,cval=0)
+    # line2 = shift(line2, -100,cval=0)
     plt.subplot(4, 1, 3)
     plt.title("before correcting offset")
-    plt.plot(line1, color = "#1a9988")
-    plt.plot(line2, color = "#eb5600")
+    plt.plot(line1, color="#1a9988")
+    plt.plot(line2, color="#eb5600")
 
-
-
-    offset = phase_align(line1, line2, (0,len(line1)))
+    offset = phase_align(line1, line2, (0, len(line1)))
     print("offset", offset)
 
     plt.subplot(4, 1, 4)
     plt.title("after correcting offset")
-    plt.plot(line1, 'r', color = "#1a9988")
-    plt.plot(shift(line2, offset, cval=0), color = "#eb5600")
+    plt.plot(line1, 'r', color="#1a9988")
+    plt.plot(shift(line2, offset, cval=0), color="#eb5600")
     plt.show()
 
-
-    print("Pearson correlation coefficient = ", pearsonr(line1,shift(line2, offset, cval=0)))
+    print("Pearson correlation coefficient = ", pearsonr(line1, shift(line2, offset, cval=0)))
     '''
-    
+
     NPTS = 100
     SHIFTVAL = 4
     NOISE = 1e-2  # can perturb offset retrieval from true

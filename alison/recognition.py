@@ -1,7 +1,7 @@
 import numpy as np
 import alison.nmf as nmf
 from alison.spectrum import get_stft
-from examples.signal_alignement import verif_lines
+from alison.signal_alignment import verif_lines
 
 
 class SoundEvent:
@@ -12,16 +12,17 @@ class SoundEvent:
 
 
 class TagInfo:
-    def __init__(self, components_range):
+    def __init__(self, components_range, best_line):
         self.components_range = components_range
         self.activated = False
+        self.best_line = best_line
 
 
 class SoundRecognizer:
     def __init__(self, **kwargs):
         self.threshold = 10
         self.horizon = 20
-        self.components_per_tag = 4
+        self.components_per_tag = 3
         # sample rate in hertz
         self.sample_rate = 25
 
@@ -51,7 +52,20 @@ class SoundRecognizer:
 
         self.events = []
 
+    """ Get the index of the activaiton line with the greatest sum of values"""
+    def best_activation_line(self, start_index):
+        maxIndex = 0
+        maxValue = 0
+        for i in range(self.components_per_tag) :
+            sumLine = sum(self.activations[i+start_index, :])
+            if (sumLine > maxValue):
+                maxIndex = i
+                maxValue = sumLine
+        return maxIndex
+
     def add_dictionary_entry(self, tag, entry):
+
+
         """Add a sound to be recognized by Big Alison.
         
         entry: a sound sample containing mostly the sound to recognize."""
@@ -67,7 +81,7 @@ class SoundRecognizer:
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-        self.tags[tag] = TagInfo(range(range_start, range_stop))
+        self.tags[tag] = TagInfo(range(range_start, range_stop), self.best_activation_line(range_start))
         self._reset_sound_processing()
 
     def save_dictionary(self, filename):
@@ -195,15 +209,26 @@ class SoundRecognizer:
             return
         
         activations = nmf.get_activations(spectrum, self.dictionary)
-        self.current_nmf_results = np.concatenate(
-            (self.current_nmf_results, activations), axis=1)
-
+        self.current_nmf_results = np.concatenate((self.current_nmf_results, activations), axis=1)
         parsed_size = self.current_nmf_results.shape[1] - self.horizon
 
         for tag, tag_info in self.tags.items():
-            if verif_lines(self.activations, activations):  # activations[i]
-                print(" \n ==== HEY I'VE RECOGNIZED A SOUND ==== \n")
+            value = verif_lines(self.activations[tag_info.best_line, :], activations[tag_info.best_line, :])
+            activated = value > 0.7
+            if activated:
+                if tag_info.activated != activated:
+                    tag_info.activated = activated
 
+                    if tag_info.activated:
+                        event = SoundEvent(
+                            self.current_position / self.sample_rate,
+                            tag, value)
+                        self.events.append(event)
+
+                        if self.callback is not None:
+                            self.callback(event)
 
         self.current_position += parsed_size
         self.current_nmf_results = self.current_nmf_results[:, -self.horizon:]
+
+
