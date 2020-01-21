@@ -170,7 +170,51 @@ def test_dico_column():
         j = j + 1
     plt.show()
 
+def test_print_matrix():
+    file = open("../samples/test5.act", 'r')
+    lines = file.readlines()
+
+    shapestr = lines[0].split(" ")
+    activations = np.zeros([int(shapestr[0]), int(shapestr[1])])
+
+    tag_count = int(lines[1])
+
+    for l in range(0, activations.shape[0]):
+        linestr = lines[l + 2 + tag_count].split(" ")
+
+        for c in range(0, activations.shape[1]):
+            activations[l, c] = float(linestr[c])
+
+    file = open("../samples/test5.dic", 'r')
+    lines = file.readlines()
+
+    shapestr = lines[0].split(" ")
+    dictionary = np.zeros([int(shapestr[0]), int(shapestr[1])])
+
+    tag_count = int(lines[1])
+
+    for l in range(0, dictionary.shape[0]):
+        linestr = lines[l + 2 + tag_count].split(" ")
+
+        for c in range(0, dictionary.shape[1]):
+            dictionary[l, c] = float(linestr[c])
+
+    j =1
+    for c in range(0, 3):
+        plt.subplot(2, 3, j)
+        plt.title("dico" + str(c))
+        plt.stem(dictionary[:, c])
+        j = j + 1
+
+    for l in range(0, 3):
+        plt.subplot(2, 3, j)
+        plt.title("act" + str(l))
+        plt.stem(activations[l, :])
+        j = j + 1
+
+    plt.show()
 
 if __name__ == "__main__":
-    test_sound_recognition_v2()
+    #test_print_matrix()
+     test_sound_recognition_v2()
     #test_dico_column()

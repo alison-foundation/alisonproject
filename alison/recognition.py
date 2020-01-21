@@ -69,7 +69,7 @@ class SoundRecognizer:
         """Add a sound to be recognized by Big Alison.
         
         entry: a sound sample containing mostly the sound to recognize."""
-        stft = get_stft(entry)
+        stft = get_stft(entry / 1.0)
         dico, _ = nmf.get_nmf(stft, self.components_per_tag)
         activations = nmf.get_activations(stft, dico, self.components_per_tag)
         if self.dictionary is None:
