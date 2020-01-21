@@ -32,8 +32,8 @@ def blink(R, G, B, nbr=3):
         turn_on_led(R,G,B, 0.5)
         pixel_ring.off()
         time.sleep(0.5)
-#boot()
-blink(255,0,0, 6)
+boot()
+#blink(255,0,0, 6)
 
 
 

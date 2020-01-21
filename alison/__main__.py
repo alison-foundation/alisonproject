@@ -63,8 +63,8 @@ if __name__ == "__main__":
         print("Recognized", evt.tag, "at time", evt.time, "with value",
               evt.value, "and color",evt.color)
         r,g,b = evt.color.split(",")
-        _thread.start_new_thread(rl.turn_on_led,(int(r),int(g),int(b)))
-        _thread.start_new_thread(ph.blink_led,(int(r),int(g),int(b)))
+        _thread.start_new_thread(rl.turn_on_led,(int(r),int(g),int(b),3),)
+        # _thread.start_new_thread(ph.blink_led,(int(r),int(g),int(b)))
 
     recognizer = SoundRecognizer(callback=callback)
 
