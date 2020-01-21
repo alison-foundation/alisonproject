@@ -91,9 +91,9 @@ class MicListener:
         rate, audio = self.convert_audio(self.learning_recording)
         return audio
 
-    def register_sound(self, name, audio):
+    def register_sound(self, name, color, audio):
         self.recognizer_lock.acquire()
-        self.recognizer.add_dictionary_entry(name, audio)
+        self.recognizer.add_dictionary_entry(name, color, audio)
         self.recognizer_lock.release()
 
     def save_file(self, name, data):

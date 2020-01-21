@@ -5,17 +5,19 @@ from alison.signal_alignment import verif_lines
 
 
 class SoundEvent:
-    def __init__(self, time, tag, value):
+    def __init__(self, time, tag, value, color="no_color"):
         self.time = time
         self.tag = tag
         self.value = value
+        self.color = color
 
 
 class TagInfo:
-    def __init__(self, components_range, best_line):
+    def __init__(self, components_range, best_line, color="no_color"):
         self.components_range = components_range
         self.activated = False
         self.best_line = best_line
+        self.color = color
 
 
 class SoundRecognizer:
@@ -52,6 +54,7 @@ class SoundRecognizer:
 
         self.events = []
 
+
     """ Get the index of the activaiton line with the greatest sum of values"""
     def best_activation_line(self, start_index):
         maxIndex = -1
@@ -63,11 +66,10 @@ class SoundRecognizer:
                 maxValue = sumLine
         return maxIndex
 
-    def add_dictionary_entry(self, tag, entry):
 
-
+    def add_dictionary_entry(self, tag, color, entry):
         """Add a sound to be recognized by Big Alison.
-        
+
         entry: a sound sample containing mostly the sound to recognize."""
         stft = get_stft(entry / 1.0)
         dico, _ = nmf.get_nmf(stft, self.components_per_tag)
@@ -81,7 +83,9 @@ class SoundRecognizer:
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-        self.tags[tag] = TagInfo(range(range_start, range_stop), self.best_activation_line(range_start))
+
+        self.tags[tag] = TagInfo(range(range_start, range_stop), self.best_activation_line(range_start), color)
+
         self._reset_sound_processing()
 
     def save_dictionary(self, filename):
@@ -206,7 +210,7 @@ class SoundRecognizer:
         of the components is greater than `threshold`"""
         if self.dictionary is None:
             return
-        
+
         activations = nmf.get_activations(spectrum, self.dictionary)
         self.current_nmf_results = np.concatenate((self.current_nmf_results, activations), axis=1)
         parsed_size = self.current_nmf_results.shape[1] - self.horizon
@@ -218,13 +222,12 @@ class SoundRecognizer:
             if activated:
                 event = SoundEvent(
                     self.current_position / self.sample_rate,
-                    tag, value)
+                    tag, value,tag_info.color)
                 self.events.append(event)
 
                 if self.callback is not None:
                     self.callback(event)
 
+
         self.current_position += parsed_size
         self.current_nmf_results = self.current_nmf_results[:, -self.horizon:]
-
-
