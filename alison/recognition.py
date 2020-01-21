@@ -54,7 +54,7 @@ class SoundRecognizer:
 
     """ Get the index of the activaiton line with the greatest sum of values"""
     def best_activation_line(self, start_index):
-        maxIndex = 0
+        maxIndex = -1
         maxValue = 0
         for i in range(self.components_per_tag) :
             sumLine = sum(self.activations[i+start_index, :])
