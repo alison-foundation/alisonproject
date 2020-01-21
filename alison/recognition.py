@@ -84,7 +84,7 @@ class SoundRecognizer:
 
         range_stop = self.dictionary.shape[1]
         range_start = range_stop - dico.shape[1]
-        index = self.best_activation_line(range_start)
+        index = self.best_activation_line()
         self.tags[tag] = TagInfo(range(range_start, range_stop), activations[index, :], index, color)
 
         self._reset_sound_processing()
