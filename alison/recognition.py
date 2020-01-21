@@ -128,7 +128,7 @@ class SoundRecognizer:
         for i in range(0, tag_count):
             tag_str = lines[i + 2].split(" ")
             self.tags[tag_str[0]] = TagInfo(
-                range(int(tag_str[1]), int(tag_str[2])))
+                range(int(tag_str[1]), int(tag_str[2])), int(tag_str[3]))
 
         for l in range(0, self.dictionary.shape[0]):
             linestr = lines[l + 2 + tag_count].split(" ")
