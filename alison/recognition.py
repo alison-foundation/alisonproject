@@ -102,6 +102,8 @@ class SoundRecognizer:
             file.write(str(value.components_range.start))
             file.write(" ")
             file.write(str(value.components_range.stop))
+            file.write(" ")
+            file.write(str(value.best_line))
             file.write("\n")
 
         for l in range(0, self.dictionary.shape[0]):
@@ -154,6 +156,8 @@ class SoundRecognizer:
             file.write(str(value.components_range.start))
             file.write(" ")
             file.write(str(value.components_range.stop))
+            file.write(" ")
+            file.write(str(value.best_line))
             file.write("\n")
 
         for l in range(0, self.activations.shape[0]):
@@ -174,11 +178,6 @@ class SoundRecognizer:
         self.activations = np.zeros([int(shapestr[0]), int(shapestr[1])])
 
         tag_count = int(lines[1])
-
-        for i in range(0, tag_count):
-            tag_str = lines[i + 2].split(" ")
-            self.tags[tag_str[0]] = TagInfo(
-                range(int(tag_str[1]), int(tag_str[2])))
 
         for l in range(0, self.activations.shape[0]):
             linestr = lines[l + 2 + tag_count].split(" ")
