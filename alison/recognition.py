@@ -215,6 +215,7 @@ class SoundRecognizer:
         for tag, tag_info in self.tags.items():
             value = verif_lines(self.activations[tag_info.best_line, :], activations[tag_info.best_line, :])
             activated = value > 0.7
+            print(value)
             if activated:
                 if tag_info.activated != activated:
                     tag_info.activated = activated

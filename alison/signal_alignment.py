@@ -152,10 +152,10 @@ def highres(y, kind='cubic', res=100):
 
 
 def verif_lines(activationRef, activationTest):
-    print(" length activation test ")
-    print(activationTest.shape)
-    print("length activation ref")
-    print(activationRef.shape)
+    #print(" length activation test ")
+    #print(activationTest.shape)
+    #print("length activation ref")
+    #print(activationRef.shape)
     line1, line2, _ = equalize_array_size(activationRef, activationTest)
     offset = phase_align(line1, line2, (0, len(line1)))
     coeff_pearson = pearsonr(line1, shift(line2, offset, cval=0))
