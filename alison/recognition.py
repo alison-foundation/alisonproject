@@ -211,13 +211,14 @@ class SoundRecognizer:
         of the components is greater than `threshold`"""
         if self.dictionary is None:
             return
-
-        activations = nmf.get_activations(spectrum, self.dictionary)
-        self.current_nmf_results = np.concatenate((self.current_nmf_results, activations), axis=1)
-        parsed_size = self.current_nmf_results.shape[1] - self.horizon
-
+        i = 1
         for tag, tag_info in self.tags.items():
             activations = nmf.get_activations(spectrum, self.dictionary[:, tag_info.components_range.start:tag_info.components_range.stop])
+            print(tag_info.components_range.start)
+            if i == 1:
+                i = 0
+                self.current_nmf_results = np.concatenate((self.current_nmf_results, activations), axis=1)
+                parsed_size = self.current_nmf_results.shape[1] - self.horizon
             value = verif_lines(tag_info.best_line, activations[tag_info.best_line_index, :])
             activated = value > 0.7
             print(value)
