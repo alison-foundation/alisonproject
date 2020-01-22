@@ -218,7 +218,7 @@ class SoundRecognizer:
 
         for tag, tag_info in self.tags.items():
             activations = nmf.get_activations(spectrum, self.dictionary[:, tag_info.components_range.start:tag_info.components_range.stop])
-            value = verif_lines(tag_info.best_line, activations[tag_info.best_line_index + tag_info.components_range.start, :])
+            value = verif_lines(tag_info.best_line, activations[tag_info.best_line_index, :])
             activated = value > 0.7
             print(value)
             if activated:
