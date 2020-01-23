@@ -217,14 +217,14 @@ class SoundRecognizer:
             print(tag_info.components_range.start)
             if i == 1:
                 i = 0
-                self.current_nmf_results = np.concatenate((self.current_nmf_results, activations), axis=1)
+
                 parsed_size = self.current_nmf_results.shape[1] - self.horizon
             value = verif_lines(tag_info.best_line, activations[tag_info.best_line_index, :])
             activated = value > 0.7
             print(value)
             if activated:
                 event = SoundEvent(
-                    self.current_position / self.sample_rate,
+                    1,
                     tag, value,tag_info.color)
                 self.events.append(event)
 
@@ -232,5 +232,4 @@ class SoundRecognizer:
                     self.callback(event)
 
 
-        self.current_position += parsed_size
-        self.current_nmf_results = self.current_nmf_results[:, -self.horizon:]
+
