@@ -7,6 +7,11 @@ from collections import namedtuple
 TIME_OUT = 2
 XYPoint = namedtuple('XYPoint', ['x', 'y'])
 
+def turn_on_rgb(r,g,b,duration):
+    xy = get_xy_point_from_rgb(r,g,b)
+    set_xy_color(xy)
+    time.sleep(duration)
+    turn_off_led(3)
 
 def blink_led(r,g,b):   
     turn_on_alert(get_xy_point_from_rgb(r,g,b),3)
@@ -15,7 +20,7 @@ def turn_on_alert(value, nb):  # Turns on an alert
 
     # ni.ifaddresses('eth0')
     # ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-    b = Bridge('192.168.1.100')
+    b = Bridge('192.168.1.101')
     b.connect()
     b.get_api()
 
@@ -29,7 +34,7 @@ def turn_on_alert(value, nb):  # Turns on an alert
     i=0
 
     while i < nb :
-        light.on = True;
+        light.on = True
         time.sleep(1)
         light.on = False
         time.sleep(1)
@@ -42,7 +47,7 @@ def turn_on_alert(value, nb):  # Turns on an alert
 def turn_off_led(led_num):
     # ni.ifaddresses('eth0')
     # ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-    b = Bridge('192.168.1.100')
+    b = Bridge('192.168.1.101')
     b.connect()
     b.get_api()
 
@@ -53,7 +58,7 @@ def turn_off_led(led_num):
 def turn_on_led(led_num):
     # ni.ifaddresses('eth0')
     # ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-    b = Bridge('192.168.1.100')
+    b = Bridge('192.168.1.101')
     b.connect()
     b.get_api()
 
@@ -65,7 +70,7 @@ def set_xy_color(value):
 
     # ni.ifaddresses('eth0')
     # ip = ni.ifaddresses('eth0')[ni.AF_INET][0]['addr']
-    b = Bridge('192.168.1.100')
+    b = Bridge('192.168.1.101')
     b.connect()
     b.get_api()
     lights = b.get_light_objects()
@@ -102,4 +107,6 @@ def get_xy_point_from_rgb(red_i, green_i, blue_i):
     xy_point = XYPoint(cx, cy)
 
     return xy_point
+
+# turn_on_rgb(255,0,0,0.5)
 

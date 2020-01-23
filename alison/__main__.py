@@ -64,7 +64,7 @@ if __name__ == "__main__":
               evt.value, "and color",evt.color)
         r,g,b = evt.color.split(",")
         _thread.start_new_thread(rl.turn_on_led,(int(r),int(g),int(b),3),)
-        # _thread.start_new_thread(ph.blink_led,(int(r),int(g),int(b)))
+        # _thread.start_new_thread(ph.turn_on_rgb,(int(r),int(g),int(b),3))
 
     recognizer = SoundRecognizer(callback=callback)
 
